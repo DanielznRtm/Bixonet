@@ -41,7 +41,7 @@ A versão instalada é mais nova que o que você conhece: antes de usar uma API 
 ## Comandos
 
 - `npm run dev` — servidor local (http://localhost:3000)
-- `npm run lint` / `npm run typecheck` / `npm test` / `npm run test:e2e`
+- `npm run lint` / `npm run typecheck` / `npm test` / `npm run test:e2e` (o e2e faz build de produção e usa a porta 3100; precisa do Supabase local)
 - `npm run check` — lint + typecheck + testes de unidade (rode antes de cada commit)
 - `npm run format` — Prettier
 - `npm run db:start` / `npm run db:stop` — Supabase local (precisa do Docker Desktop aberto)

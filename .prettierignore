@@ -7,3 +7,5 @@ test-results
 supabase/.temp
 src/types/database.ts
 src/components/ui
+public/vendor
+.playwright-mcp

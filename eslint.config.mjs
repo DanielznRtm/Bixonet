@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "src/types/database.ts",
+    "public/vendor/**",
+    ".playwright-mcp/**",
   ]),
 ]);
 

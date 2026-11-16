@@ -69,6 +69,12 @@ export type Database = {
 isOneToOne: false
       referencedRelation: "cities"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "institutions_city_id_fkey"
+      columns: ["city_id"]
+isOneToOne: false
+      referencedRelation: "institution_directory"
+      referencedColumns: ["city_id"]
     }
                   ]
                 },"listings": {
@@ -89,6 +95,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "cities"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "listings_city_id_fkey"
+      columns: ["city_id"]
+isOneToOne: false
+      referencedRelation: "institution_directory"
+      referencedColumns: ["city_id"]
     }
                   ]
                 },"reports": {
@@ -127,6 +139,12 @@ isOneToOne: false
       foreignKeyName: "republic_institutions_institution_id_fkey"
       columns: ["institution_id"]
 isOneToOne: false
+      referencedRelation: "institution_directory"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "republic_institutions_institution_id_fkey"
+      columns: ["institution_id"]
+isOneToOne: false
       referencedRelation: "institutions"
       referencedColumns: ["id"]
     },{
@@ -155,12 +173,26 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "cities"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "republics_city_id_fkey"
+      columns: ["city_id"]
+isOneToOne: false
+      referencedRelation: "institution_directory"
+      referencedColumns: ["city_id"]
     }
                   ]
                 }
           }
           Views: {
-            [_ in never]: never
+            "institution_directory": {
+                  Row: {
+                    "acronym": string | null,"campus_name": string | null,"city_id": string,"city_name": string,"city_slug": string,"city_state": string,"has_own_housing": boolean,"housing_contact_email": string | null,"housing_contact_phone": string | null,"housing_contact_url": string | null,"housing_notes": string | null,"id": string,"lat": number | null,"lng": number | null,"name": string,"slug": string,"website": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    
+                  ]
+                }
           }
           Functions: {
             "is_admin":
