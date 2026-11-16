@@ -47,3 +47,5 @@ A versão instalada é mais nova que o que você conhece: antes de usar uma API 
 - `npm run db:start` / `npm run db:stop` — Supabase local (precisa do Docker Desktop aberto)
 - `npm run db:reset` — recria o banco local com migrations + seed
 - `npm run db:types` — regenera `src/types/database.ts`
+- `npm run test:db` — testes pgTAP do banco (RLS, triggers, busca)
+- `npm run test:integration` — testa a busca chamada do Next contra o banco local

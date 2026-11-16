@@ -16,19 +16,23 @@ description: Modelo de dados, migrations, seed, cadastro/moderação de repúbli
   instagram, whatsapp, contact_name, owner_user_id,
   status (`pending` | `approved` | `rejected` | `archived`), verified (bool),
   consent_at (timestamptz, obrigatório), is_sample (bool), created_at, updated_at
-- `republic_institutions` — republic_id, institution_id, distance_m (calculado)
+- `republic_institutions` — republic_id, institution_id (faculdades que a rep declara atender; a distância NÃO é guardada, é calculada na busca)
 - `listings` (apartamentos/kitnets) — id, title, city_id, approx_location, price, bedrooms, furnished,
   external_url, source, is_sample, status, created_at
-- `reports` — id, republic_id, reason, message, created_at (denúncia de informação errada)
+- `reports` — id, republic_id, reason (`wrong_info` | `closed` | `no_consent` | `removal_request` | `other`), message, resolved_at, created_at
+- `admins` — user_id (quem modera; inclusão só por SQL com a chave secreta)
 
 ## Regras
 
 - RLS ligado em todas as tabelas. Leitura pública só de `status = 'approved'`. Escrita: o dono (`owner_user_id`) edita a própria república; admin modera tudo.
+- O público (anon) NÃO lê a tabela `republics`: só pelas funções `security definer` (ex.: `search_republics`), que devolvem apenas repúblicas aprovadas e colunas públicas. RLS filtra linhas, não colunas.
+- A trigger `protect_moderation_fields` impede o dono de mudar `status` (exceto para `archived`), `verified`, `is_sample` e `owner_user_id`.
 - `approx_location`: ao salvar, arredonde a coordenada (por exemplo, 3 casas decimais, ~100 m) ou aplique um deslocamento aleatório fixo. O endereço exato **não é armazenado** na versão inicial.
 - Cadastro de república exige checkbox de consentimento ("Autorizo exibir estas informações publicamente"), que grava `consent_at`.
 - Nova república entra como `pending` e só aparece depois de aprovada no `/admin`.
 - Seed: Sorocaba + instituições reais da cidade (nome, campus, coordenada do campus, site oficial). Repúblicas e imóveis do seed são **fictícios**, com `is_sample = true` e um selo "exemplo" na UI. Contatos de moradia das faculdades: só o que estiver no site oficial; se não encontrar, deixe nulo e marque um TODO.
 - Toda mudança de schema = nova migration em `supabase/migrations/`, depois `npx supabase gen types typescript` para atualizar `src/types/database.ts`.
+- Teste RLS e funções com pgTAP em `supabase/tests/database/` (`npm run test:db`). Fixtures de teste ficam longe de Sorocaba (ex.: -21, -50) para o seed não interferir.
 
 ## Fontes de dados (ordem de prioridade)
 

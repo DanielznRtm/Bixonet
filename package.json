@@ -18,9 +18,13 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > src/types/database.ts",
-    "check": "npm run lint && npm run typecheck && npm test"
+    "check": "npm run lint && npm run typecheck && npm test",
+    "test:db": "supabase test db",
+    "test:integration": "vitest run --mode integration src/lib/supabase"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
     "cn": "^0.5.2",
@@ -50,6 +54,7 @@
     "supabase": "^3.1.0",
     "tailwindcss": "4.3.3",
     "typescript": "^5",
+    "vite": "^8.3.8",
     "vitest": "^5.1.0"
   },
   "engines": {

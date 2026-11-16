@@ -38,6 +38,8 @@ O Supabase Studio local fica em http://127.0.0.1:54323.
 | `npm run db:start` / `npm run db:stop`    | Liga/desliga o Supabase local                            |
 | `npm run db:reset`                        | Recria o banco local com migrations + seed               |
 | `npm run db:types`                        | Regenera `src/types/database.ts` a partir do banco local |
+| `npm run test:db`                         | Testes do banco (pgTAP): RLS, triggers e busca           |
+| `npm run test:integration`                | Busca chamada do Next contra o banco local               |
 
 ## Estrutura
 
@@ -65,3 +67,12 @@ npm run db:types
 ```
 
 O `seed.sql` só roda no banco local. Os dados de exemplo nunca vão para produção.
+
+### Virar admin
+
+Depois de fazer login uma vez (Fase 5), rode no SQL Editor do Studio (local: http://127.0.0.1:54323):
+
+```sql
+insert into public.admins (user_id)
+select id from auth.users where email = 'seu-email@exemplo.com';
+```
