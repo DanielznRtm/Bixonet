@@ -1,0 +1,2 @@
+-- Seed local (roda só em `npm run db:reset`; não vai para o banco de produção).
+-- Fase 1: Sorocaba, instituições reais e repúblicas/imóveis fictícios com is_sample = true.
