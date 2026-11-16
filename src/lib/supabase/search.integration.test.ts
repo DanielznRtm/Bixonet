@@ -17,11 +17,9 @@ describe.runIf(import.meta.env.MODE === "integration")(
       expect(error).toBeNull();
       expect(data?.length).toBeGreaterThan(0);
 
-      const distances = (data ?? []).map((r: { distance_m: number }) => r.distance_m);
+      const distances = (data ?? []).map((r) => r.distance_m);
       expect(distances).toEqual([...distances].sort((a, b) => a - b));
-      expect(data?.some((r: { slug: string }) => r.slug === "rep-quintal-exemplo")).toBe(
-        false,
-      );
+      expect(data?.some((r) => r.slug === "rep-quintal-exemplo")).toBe(false);
     });
 
     it("o público não lê a tabela republics direto", async () => {

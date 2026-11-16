@@ -198,11 +198,9 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims to '{"sub":"aaaaaaaa-0000-4000-8000-000000000002","role":"authenticated"}';
 
-select is(
-  (with u as (
-     update public.republics set description = 'invadido' where slug = 't-pendente' returning 1
-   ) select count(*)::int from u),
-  0,
+-- O RLS esconde a linha: o update não dá erro, só não atinge nada.
+select is_empty(
+  $$ update public.republics set description = 'invadido' where slug = 't-pendente' returning 1 $$,
   'ninguém edita república de outra pessoa'
 );
 

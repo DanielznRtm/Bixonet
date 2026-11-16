@@ -33,6 +33,7 @@ description: Modelo de dados, migrations, seed, cadastro/moderação de repúbli
 - Seed: Sorocaba + instituições reais da cidade (nome, campus, coordenada do campus, site oficial). Repúblicas e imóveis do seed são **fictícios**, com `is_sample = true` e um selo "exemplo" na UI. Contatos de moradia das faculdades: só o que estiver no site oficial; se não encontrar, deixe nulo e marque um TODO.
 - Toda mudança de schema = nova migration em `supabase/migrations/`, depois `npx supabase gen types typescript` para atualizar `src/types/database.ts`.
 - Teste RLS e funções com pgTAP em `supabase/tests/database/` (`npm run test:db`). Fixtures de teste ficam longe de Sorocaba (ex.: -21, -50) para o seed não interferir.
+- Os tipos gerados de funções (`search_republics`) marcam todas as colunas como não-nulas, mas `neighborhood`, `price_min`, `price_max` e `cover_photo` podem vir `null`: trate isso na UI.
 
 ## Fontes de dados (ordem de prioridade)
 
