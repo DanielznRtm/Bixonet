@@ -2,6 +2,11 @@
   "name": "bixo-net",
   "version": "0.1.0",
   "private": true,
+  "description": "Ache república perto da faculdade: busca geográfica por campus, mapa com áreas aproximadas (LGPD) e moderação. MVP em Sorocaba (SP).",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanielznRtm/Bixonet.git"
+  },
   "scripts": {
     "predev": "node scripts/copy-maplibre-worker.mjs",
     "dev": "next dev",

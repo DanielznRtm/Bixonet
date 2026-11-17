@@ -58,7 +58,7 @@ cd bixo.net
 claude
 ```
 
-Cole o conteúdo de `PROMPT_CLAUDE_CODE.md`.
+Cole o conteúdo de [`prompt-inicial.md`](prompt-inicial.md).
 
 ## 7. O que NÃO é código mas decide o projeto
 
