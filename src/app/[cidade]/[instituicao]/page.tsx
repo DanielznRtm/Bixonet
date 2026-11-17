@@ -113,6 +113,7 @@ async function Results({
         lat: institution.lat,
         lng: institution.lng,
         name: institutionShortName(institution),
+        slug: institution.slug,
       }}
       filters={filters}
       republics={republics}

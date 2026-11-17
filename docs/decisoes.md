@@ -96,3 +96,27 @@ Ordem cronológica. Cada item cita onde a decisão vive no código.
 **Decisão.** Repúblicas entram por autocadastro com moderação ou curadoria manual. Imóveis entram como links externos ou parcerias. Nada de raspar redes sociais ou portais.
 
 **Por quê.** Termos de uso, LGPD e qualidade: dado raspado envelhece rápido e não tem consentimento de quem mora lá.
+
+## 12. Página da república sem pré-geração no build
+
+**Contexto.** Com Cache Components, `generateStaticParams` precisa devolver pelo menos um item. O banco de produção começa sem repúblicas, então o build quebraria.
+
+**Decisão.** A página `/republica/[slug]` não é pré-gerada: carrega dentro de `<Suspense>` e os dados ficam em cache com as tags `republics` e `republic:<slug>`, para a moderação (Fase 5) invalidar só o que mudou.
+
+**Onde.** `src/app/republica/[slug]/page.tsx`, `src/lib/data/republic-detail.ts`
+
+## 13. Contato sem inventar dados
+
+**Decisão.** O botão "Falar no WhatsApp" monta um link `wa.me` com mensagem pronta citando a faculdade de onde o bixo veio (`?de=unesp`). Repúblicas de exemplo não têm número: o botão aparece desativado. Número fora do formato esperado também não vira link.
+
+**Por quê.** Um número inventado no seed poderia ser de uma pessoa real, que passaria a receber mensagens de calouros.
+
+**Onde.** `src/lib/republic/whatsapp.ts`, `src/components/republic/contact-card.tsx`
+
+## 14. Repetir uma vez em timeout de conexão fria
+
+**Contexto.** Numa conexão nova, a primeira chamada ao PostGIS carrega a biblioteca e pode passar do limite de 3 s do papel público. No Supabase local do Docker no Windows isso acontecia sob carga.
+
+**Decisão.** As consultas públicas repetem uma vez quando o banco cancela por tempo (código 57014). Outros erros não são repetidos.
+
+**Onde.** `src/lib/supabase/retry.ts`

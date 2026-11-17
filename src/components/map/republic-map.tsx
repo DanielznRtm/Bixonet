@@ -1,9 +1,7 @@
 "use client";
 
-import "maplibre-gl/dist/maplibre-gl.css";
 import type { FeatureCollection, Polygon } from "geojson";
 import { GraduationCap } from "lucide-react";
-import { setWorkerUrl } from "maplibre-gl";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Map, {
@@ -20,19 +18,10 @@ import type { RepublicResult } from "@/lib/data/republics";
 import { circlePolygon } from "@/lib/geo";
 import { formatPriceRange, KIND_LABEL } from "@/lib/search/format";
 import { KIND_STYLE } from "@/lib/search/kind-style";
-
-// O MapLibre calcula o caminho do worker a partir do próprio arquivo, o que não funciona no
-// bundle do Turbopack. A cópia é servida de public/vendor/ (scripts/copy-maplibre-worker.mjs).
-setWorkerUrl("/vendor/maplibre-gl-worker.mjs");
-
-const MAP_STYLE =
-  process.env.NEXT_PUBLIC_MAP_STYLE_URL ?? "https://tiles.openfreemap.org/styles/liberty";
-
-/** Raio do círculo de área aproximada (LGPD: nunca um pino exato). */
-const AREA_RADIUS_M = 150;
+import { AREA_RADIUS_M, MAP_STYLE, OSM_ATTRIBUTION } from "./maplibre-setup";
 
 type Props = {
-  campus: { lat: number; lng: number; name: string };
+  campus: { lat: number; lng: number; name: string; slug: string };
   republics: RepublicResult[];
   highlightedId: string | null;
   onHighlight: (id: string | null) => void;
@@ -119,7 +108,7 @@ export default function RepublicMap({
         <AttributionControl
           position="bottom-right"
           compact
-          customAttribution='Dados do mapa © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a>'
+          customAttribution={OSM_ATTRIBUTION}
         />
 
         <Source id="republic-areas" type="geojson" data={areas}>
@@ -170,7 +159,7 @@ export default function RepublicMap({
                 {formatPriceRange(selected.priceMin, selected.priceMax)}
               </p>
               <Link
-                href={`/republica/${selected.slug}`}
+                href={`/republica/${selected.slug}?de=${campus.slug}`}
                 className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
               >
                 Ver república

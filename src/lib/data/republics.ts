@@ -5,6 +5,7 @@ import {
   type SearchFilters,
 } from "@/lib/search/filters";
 import { createPublicClient } from "@/lib/supabase/public";
+import { retryOnTimeout } from "@/lib/supabase/retry";
 
 /**
  * Resultado da busca. Os tipos gerados dizem que tudo vem preenchido, mas bairro,
@@ -27,8 +28,6 @@ export type RepublicResult = {
   distanceM: number;
 };
 
-const STATEMENT_TIMEOUT = "57014";
-
 /**
  * Busca repúblicas aprovadas perto de uma instituição.
  * Cache curto por combinação de filtros; aprovar uma república chama
@@ -45,12 +44,9 @@ export async function searchRepublics(
   const supabase = createPublicClient();
   const args = filtersToRpcArgs(institutionId, filters);
 
-  let { data, error } = await supabase.rpc("search_republics", args);
-  // Numa conexão nova, a 1ª chamada ao PostGIS carrega a biblioteca e pode estourar o
-  // limite de 3 s do papel anon (código 57014). Uma nova tentativa já pega a conexão "quente".
-  if (error?.code === STATEMENT_TIMEOUT) {
-    ({ data, error } = await supabase.rpc("search_republics", args));
-  }
+  const { data, error } = await retryOnTimeout(() =>
+    supabase.rpc("search_republics", args),
+  );
   if (error || !data) throw new Error(`Erro na busca de repúblicas: ${error?.message}`);
 
   return data.map((r) => ({

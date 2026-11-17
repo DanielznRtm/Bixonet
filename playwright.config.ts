@@ -34,7 +34,8 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
+    // Nunca reaproveita: um servidor velho na porta 3100 testaria um build desatualizado.
+    reuseExistingServer: false,
     timeout: 300_000,
   },
 });

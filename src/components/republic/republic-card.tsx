@@ -11,11 +11,19 @@ import { cn } from "@/lib/utils";
 type Props = {
   republic: RepublicResult;
   campusName: string;
+  /** Slug da faculdade da busca, para a página da república saber de onde o bixo veio. */
+  campusSlug: string;
   highlighted?: boolean;
   onHover?: (id: string | null) => void;
 };
 
-export function RepublicCard({ republic: r, campusName, highlighted, onHover }: Props) {
+export function RepublicCard({
+  republic: r,
+  campusName,
+  campusSlug,
+  highlighted,
+  onHover,
+}: Props) {
   const style = KIND_STYLE[r.kind];
 
   return (
@@ -68,7 +76,7 @@ export function RepublicCard({ republic: r, campusName, highlighted, onHover }: 
         <h3 className="line-clamp-2 font-heading text-lg leading-tight font-semibold">
           {/* O link cobre o card inteiro (after:absolute) */}
           <Link
-            href={`/republica/${r.slug}`}
+            href={`/republica/${r.slug}?de=${campusSlug}`}
             className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-3 focus-visible:after:ring-ring/50"
           >
             {r.name}

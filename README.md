@@ -59,12 +59,12 @@ As decisões de arquitetura, com o problema, a escolha e o custo de cada uma, es
 
 ## Qualidade
 
-| Tipo          | Ferramenta              | O que cobre                                                                                                         |
-| ------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo                                                  |
-| Banco         | pgTAP (22 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; arredondamento; ordenação e filtros da busca |
-| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                     |
-| Ponta a ponta | Playwright (22 testes)  | Fluxo home → busca, filtros, estado vazio, mapa e 404, em 375 px e 1280 px, contra o build de produção              |
+| Tipo          | Ferramenta              | O que cobre                                                                                                             |
+| ------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo, link do WhatsApp, denúncia, repetição em timeout    |
+| Banco         | pgTAP (31 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; arredondamento; busca e página de detalhe        |
+| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                         |
+| Ponta a ponta | Playwright (36 testes)  | Home → busca → república, filtros, estado vazio, mapas, denúncia e 404, em 375 px e 1280 px, contra o build de produção |
 
 ## Rodando localmente
 
@@ -148,7 +148,7 @@ src/
 - [x] **Fase 0:** setup (Next.js, Tailwind, shadcn, testes, Supabase)
 - [x] **Fase 1:** banco, RLS, busca geográfica, seed e testes pgTAP
 - [x] **Fase 2:** home, busca por faculdade, filtros e mapa
-- [ ] **Fase 3:** página da república (galeria, regras, WhatsApp, denúncia)
+- [x] **Fase 3:** página da república (galeria, regras, WhatsApp, denúncia)
 - [ ] **Fase 4:** "Não quero república": kitnets e contatos de moradia da faculdade
 - [ ] **Fase 5:** cadastro com login por link mágico, upload de fotos e painel de moderação
 - [ ] **Fase 6:** SEO, acessibilidade, Lighthouse ≥ 90 e deploy (Vercel + Supabase)

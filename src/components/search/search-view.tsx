@@ -53,7 +53,7 @@ function useIsDesktop() {
 type MobileTab = "lista" | "mapa";
 
 type Props = {
-  campus: { lat: number; lng: number; name: string };
+  campus: { lat: number; lng: number; name: string; slug: string };
   filters: SearchFilters;
   republics: RepublicResult[];
 };
@@ -108,6 +108,7 @@ export function SearchView({ campus, filters, republics }: Props) {
             <RepublicCard
               republic={r}
               campusName={campus.name}
+              campusSlug={campus.slug}
               highlighted={r.id === highlightedId}
               onHover={setHighlightedId}
             />

@@ -1,5 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
+import { retryOnTimeout } from "@/lib/supabase/retry";
 
 // Cidades e instituições quase não mudam: cache de horas.
 // Mudou algo no admin? revalidateTag("catalog") (Fase 5).
@@ -78,12 +79,14 @@ export async function getAllInstitutions(): Promise<Institution[]> {
   cacheLife("hours");
   cacheTag("catalog");
 
-  const { data, error } = await createPublicClient()
-    .from("institution_directory")
-    .select("*")
-    .order("city_name")
-    .order("acronym");
-  if (error) throw new Error(`Erro ao carregar instituições: ${error.message}`);
+  const { data, error } = await retryOnTimeout(() =>
+    createPublicClient()
+      .from("institution_directory")
+      .select("*")
+      .order("city_name")
+      .order("acronym"),
+  );
+  if (error || !data) throw new Error(`Erro ao carregar instituições: ${error?.message}`);
   return data.map(toInstitution);
 }
 

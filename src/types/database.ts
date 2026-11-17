@@ -195,11 +195,21 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "is_admin":
+            "get_republic":
+{ Args: { "p_slug": string }; Returns: {
+              "amenities": (string)[],"city_name": string,"city_slug": string,"city_state": string,"contact_name": string,"description": string,"house_rules": string,"id": string,"instagram": string,"is_sample": boolean,"kind": Database["public"]['Enums']["republic_kind"],"lat": number,"lng": number,"name": string,"neighborhood": string,"open_spots": number,"photos": (string)[],"price_max": number,"price_min": number,"slug": string,"total_residents": number,"updated_at": string,"verified": boolean,"whatsapp": string
+            }[]
+                           },
+"is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "is_public_republic":
 { Args: { "p_republic_id": string }; Returns: boolean
+                           },
+"republic_nearby_institutions":
+{ Args: { "p_max_distance_m"?: number,"p_republic_id": string }; Returns: {
+              "acronym": string,"city_slug": string,"declared": boolean,"distance_m": number,"institution_id": string,"name": string,"slug": string
+            }[]
                            },
 "search_republics":
 { Args: { "p_institution_id": string,"p_kind"?: Database["public"]['Enums']["republic_kind"],"p_max_distance_m"?: number,"p_max_price"?: number,"p_only_open"?: boolean }; Returns: {
