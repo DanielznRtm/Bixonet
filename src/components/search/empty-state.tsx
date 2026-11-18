@@ -34,7 +34,7 @@ export function EmptyState({
         <p className="text-muted-foreground">
           {hasFilters
             ? "Tente aumentar a distância ou tirar algum filtro."
-            : "Conhece alguma? Indique para ela aparecer aqui para os próximos bixos."}
+            : "Mora numa rep daqui? Cadastre de graça. Conhece uma? Mande o link desta página para ela."}
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -58,7 +58,7 @@ export function EmptyState({
           variant={hasFilters ? "ghost" : "default"}
           className="rounded-full"
         >
-          <Link href="/cadastrar-republica">Conhece uma rep? Indique</Link>
+          <Link href="/cadastrar-republica">Mora numa rep? Cadastre</Link>
         </Button>
       </div>
     </div>

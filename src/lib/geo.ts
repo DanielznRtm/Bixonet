@@ -40,3 +40,22 @@ export function circlePolygon(
   ring.push(ring[0]);
   return { type: "Polygon", coordinates: [ring] };
 }
+
+/**
+ * Lê um ponto no formato que a API do Supabase devolve para colunas geography
+ * (EWKB em hexadecimal: "0101000020E6100000…"). Devolve null se não for um ponto.
+ */
+export function parsePointEwkb(hex: string): { lat: number; lng: number } | null {
+  if (!/^[0-9a-fA-F]+$/.test(hex) || hex.length < 42) return null;
+  const bytes = new Uint8Array(hex.match(/../g)!.map((b) => parseInt(b, 16)));
+  const view = new DataView(bytes.buffer);
+  const little = bytes[0] === 1;
+  const type = view.getUint32(1, little);
+  const hasSrid = (type & 0x20000000) !== 0;
+  if ((type & 0xff) !== 1) return null; // 1 = Point
+  const offset = 5 + (hasSrid ? 4 : 0);
+  if (bytes.length < offset + 16) return null;
+  const lng = view.getFloat64(offset, little);
+  const lat = view.getFloat64(offset + 8, little);
+  return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+}

@@ -22,6 +22,7 @@ Todo ano, milhares de aprovados procuram moradia em poucas semanas, entre a list
 - **Filtros na URL** (tipo, preço, só com vaga, raio): o link compartilhado no grupo abre já filtrado.
 - **Mapa** com o campus e **áreas aproximadas** de ~150 m, nunca o endereço exato (LGPD).
 - **"Não quero república":** kitnets e apartamentos perto do campus (links externos, sem scraping) e os contatos de moradia da própria faculdade, só quando confirmados no site oficial.
+- **Cadastro de república** em 5 etapas (pino no mapa, fotos reduzidas no celular, consentimento LGPD), login por link no e-mail, "Minhas reps" e painel de moderação `/admin`.
 - **Mobile-first:** no celular, abas "Lista | Mapa" e filtros num painel; o mapa só é baixado quando aparece.
 - **Segurança no banco:** RLS em todas as tabelas, leitura pública só por funções, localização arredondada por trigger e trava contra autoaprovação.
 
@@ -80,7 +81,7 @@ npx supabase status     # copie a URL e a publishable key para o .env.local
 npm run dev             # http://localhost:3000
 ```
 
-O Supabase Studio local fica em http://127.0.0.1:54323.
+O Supabase local vem enxuto (sem Studio) para caber em máquinas com pouca memória. Para usar o Studio, troque `enabled` para `true` na seção `[studio]` do `supabase/config.toml` e reinicie com `npm run db:stop` e `npm run db:start`.
 
 <details>
 <summary>Todos os scripts</summary>
@@ -101,6 +102,7 @@ O Supabase Studio local fica em http://127.0.0.1:54323.
 | `npm run db:reset`                        | Recria o banco local com migrations + seed                                                   |
 | `npm run db:types`                        | Regenera `src/types/database.ts`                                                             |
 | `npm run import:listings -- arquivo.csv`  | Importa imóveis de uma planilha (modelo em `docs/imoveis-modelo.csv`); `--dry-run` só valida |
+| `npm run admin:add -- email`              | Torna um usuário admin (ele precisa ter entrado uma vez)                                     |
 
 </details>
 
@@ -117,12 +119,13 @@ npm run db:types
 
 O `seed.sql` só roda no banco local; os dados de exemplo nunca vão para produção.
 
-Para virar admin (depois do primeiro login, na Fase 5), rode no SQL Editor do Studio:
+Para virar admin, entre no site uma vez (/entrar) e rode:
 
-```sql
-insert into public.admins (user_id)
-select id from auth.users where email = 'seu-email@exemplo.com';
+```bash
+npm run admin:add -- seu-email@exemplo.com
 ```
+
+Localmente, os e-mails de login não saem de verdade: abra a caixa de teste em http://127.0.0.1:54324.
 
 </details>
 
@@ -152,7 +155,7 @@ src/
 - [x] **Fase 2:** home, busca por faculdade, filtros e mapa
 - [x] **Fase 3:** página da república (galeria, regras, WhatsApp, denúncia)
 - [x] **Fase 4:** "Não quero república": kitnets e contatos de moradia da faculdade
-- [ ] **Fase 5:** cadastro com login por link mágico, upload de fotos e painel de moderação
+- [x] **Fase 5:** cadastro com login por link mágico, upload de fotos e painel de moderação
 - [ ] **Fase 6:** SEO, acessibilidade, Lighthouse ≥ 90 e deploy (Vercel + Supabase)
 - [ ] **Fase 7:** busca em linguagem natural com a Claude API ("rep mista até 700 perto da Unesp")
 

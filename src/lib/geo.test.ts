@@ -42,3 +42,19 @@ describe("circlePolygon", () => {
     }
   });
 });
+
+describe("parsePointEwkb", () => {
+  it("lê o ponto no formato devolvido pela API do Supabase", async () => {
+    const { parsePointEwkb } = await import("./geo");
+    // Valor real da Rep Jabuticaba (seed): POINT(-47.42 -23.476), SRID 4326.
+    const point = parsePointEwkb("0101000020E6100000F6285C8FC2B547C060E5D022DB7937C0");
+    expect(point?.lng).toBeCloseTo(-47.42, 6);
+    expect(point?.lat).toBeCloseTo(-23.476, 6);
+  });
+
+  it("recusa texto que não é ponto", async () => {
+    const { parsePointEwkb } = await import("./geo");
+    expect(parsePointEwkb("abc")).toBeNull();
+    expect(parsePointEwkb("zz")).toBeNull();
+  });
+});

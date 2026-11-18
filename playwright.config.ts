@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Os testes e2e rodam contra o BUILD DE PRODUÇÃO (porta 3100): é o que o usuário recebe,
+// Os testes e2e rodam contra o BUILD DE PRODUÇÃO (porta 3100; npm run test:e2e faz o build antes): é o que o usuário recebe,
 // e o servidor de dev compila cada página na primeira visita, o que deixa os testes instáveis.
 // Precisa do Supabase local rodando (npm run db:start).
 const PORT = 3100;
@@ -32,10 +32,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    // O build roda antes (npm run test:e2e); aqui só sobe o servidor já pronto.
+    command: `npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
     // Nunca reaproveita: um servidor velho na porta 3100 testaria um build desatualizado.
     reuseExistingServer: false,
-    timeout: 300_000,
+    timeout: 120_000,
   },
 });

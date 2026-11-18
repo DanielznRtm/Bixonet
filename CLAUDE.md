@@ -50,3 +50,5 @@ A versão instalada é mais nova que o que você conhece: antes de usar uma API 
 - `npm run test:db` — testes pgTAP do banco (RLS, triggers, busca)
 - `npm run test:integration` — testa a busca chamada do Next contra o banco local
 - `npm run import:listings -- arquivo.csv [--dry-run]` — importa imóveis de uma planilha (modelo: `docs/imoveis-modelo.csv`)
+- `npm run admin:add -- email` — torna um usuário admin (ele precisa ter entrado no site uma vez)
+- Supabase local enxuto: Studio, analytics, realtime e edge runtime desligados no `supabase/config.toml` (troque `enabled` para religar). E-mails de login vão para a caixa de teste em http://127.0.0.1:54324
