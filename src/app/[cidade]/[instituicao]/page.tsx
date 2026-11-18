@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { InstitutionTabs } from "@/components/search/institution-tabs";
 import { ResultsSkeleton } from "@/components/search/results-skeleton";
 import { SearchView } from "@/components/search/search-view";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -72,6 +73,13 @@ async function InstitutionContent({ params, searchParams }: Props) {
           {institution.acronym ? institution.name : null}
           {institution.campusName ? ` · ${institution.campusName}` : null}
         </p>
+        <div className="mt-2">
+          <InstitutionTabs
+            citySlug={institution.city.slug}
+            institutionSlug={institution.slug}
+            current="republicas"
+          />
+        </div>
       </header>
 
       {/* Os filtros vêm da URL: só a lista espera, o cabeçalho já aparece. */}

@@ -211,6 +211,11 @@ isOneToOne: false
               "acronym": string,"city_slug": string,"declared": boolean,"distance_m": number,"institution_id": string,"name": string,"slug": string
             }[]
                            },
+"search_listings":
+{ Args: { "p_institution_id": string,"p_max_distance_m"?: number,"p_max_price"?: number,"p_only_furnished"?: boolean }; Returns: {
+              "bedrooms": number,"distance_m": number,"external_url": string,"furnished": boolean,"id": string,"is_sample": boolean,"lat": number,"lng": number,"price": number,"source": string,"title": string
+            }[]
+                           },
 "search_republics":
 { Args: { "p_institution_id": string,"p_kind"?: Database["public"]['Enums']["republic_kind"],"p_max_distance_m"?: number,"p_max_price"?: number,"p_only_open"?: boolean }; Returns: {
               "cover_photo": string,"distance_m": number,"id": string,"is_sample": boolean,"kind": Database["public"]['Enums']["republic_kind"],"lat": number,"lng": number,"name": string,"neighborhood": string,"open_spots": number,"price_max": number,"price_min": number,"slug": string,"verified": boolean

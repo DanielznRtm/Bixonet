@@ -120,3 +120,19 @@ Ordem cronológica. Cada item cita onde a decisão vive no código.
 **Decisão.** As consultas públicas repetem uma vez quando o banco cancela por tempo (código 57014). Outros erros não são repetidos.
 
 **Onde.** `src/lib/supabase/retry.ts`
+
+## 15. Busca de imóveis com as permissões de quem pergunta
+
+**Contexto.** A busca de repúblicas usa `security definer` para esconder colunas privadas. Imóveis não têm coluna privada, e o RLS já deixa o público ler só os ativos.
+
+**Decisão.** `search_listings` roda como `security invoker` (o padrão): o próprio RLS garante "só ativos". Menos código privilegiado no banco.
+
+**Onde.** `supabase/migrations/*_listing_search.sql`
+
+## 16. Imóveis por planilha, com validação antes de gravar
+
+**Contexto.** Até existir uma tela de cadastro (Fase 5), a única forma de colocar imóveis reais seria escrever SQL. E imóveis entram por curadoria ou parceria, nunca por scraping.
+
+**Decisão.** `npm run import:listings -- arquivo.csv` lê uma planilha (vírgula ou ponto e vírgula, como o Excel exporta), valida tudo antes (link `https://`, latitude/longitude dentro de SP, sim/não) e só grava se não houver erro, apontando a linha de cada problema. O link do anúncio é único no banco, então rodar de novo atualiza em vez de duplicar. A lógica fica em `src/lib/listings/csv.ts`, com testes; o script só lê o arquivo e grava.
+
+**Onde.** `scripts/import-listings.ts`, `src/lib/listings/csv.ts`, `docs/imoveis-modelo.csv`

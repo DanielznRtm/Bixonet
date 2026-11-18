@@ -49,3 +49,4 @@ A versão instalada é mais nova que o que você conhece: antes de usar uma API 
 - `npm run db:types` — regenera `src/types/database.ts`
 - `npm run test:db` — testes pgTAP do banco (RLS, triggers, busca)
 - `npm run test:integration` — testa a busca chamada do Next contra o banco local
+- `npm run import:listings -- arquivo.csv [--dry-run]` — importa imóveis de uma planilha (modelo: `docs/imoveis-modelo.csv`)

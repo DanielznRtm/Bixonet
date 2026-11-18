@@ -27,7 +27,8 @@
     "db:types": "supabase gen types typescript > src/types/database.ts",
     "check": "npm run lint && npm run typecheck && npm test",
     "test:db": "supabase test db",
-    "test:integration": "vitest run --mode integration src/lib/supabase"
+    "test:integration": "vitest run --mode integration src/lib/supabase",
+    "import:listings": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/import-listings.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -21,6 +21,7 @@ Todo ano, milhares de aprovados procuram moradia em poucas semanas, entre a list
 - **Lista ordenada pela distância** até o campus, calculada no banco com PostGIS.
 - **Filtros na URL** (tipo, preço, só com vaga, raio): o link compartilhado no grupo abre já filtrado.
 - **Mapa** com o campus e **áreas aproximadas** de ~150 m, nunca o endereço exato (LGPD).
+- **"Não quero república":** kitnets e apartamentos perto do campus (links externos, sem scraping) e os contatos de moradia da própria faculdade, só quando confirmados no site oficial.
 - **Mobile-first:** no celular, abas "Lista | Mapa" e filtros num painel; o mapa só é baixado quando aparece.
 - **Segurança no banco:** RLS em todas as tabelas, leitura pública só por funções, localização arredondada por trigger e trava contra autoaprovação.
 
@@ -59,12 +60,12 @@ As decisões de arquitetura, com o problema, a escolha e o custo de cada uma, es
 
 ## Qualidade
 
-| Tipo          | Ferramenta              | O que cobre                                                                                                             |
-| ------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo, link do WhatsApp, denúncia, repetição em timeout    |
-| Banco         | pgTAP (31 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; arredondamento; busca e página de detalhe        |
-| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                         |
-| Ponta a ponta | Playwright (36 testes)  | Home → busca → república, filtros, estado vazio, mapas, denúncia e 404, em 375 px e 1280 px, contra o build de produção |
+| Tipo          | Ferramenta              | O que cobre                                                                                                                                  |
+| ------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo, link do WhatsApp, denúncia, planilha de imóveis, repetição em timeout    |
+| Banco         | pgTAP (38 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; arredondamento; busca de repúblicas e imóveis; página de detalhe      |
+| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                                              |
+| Ponta a ponta | Playwright (52 testes)  | Home → busca → república, moradia e imóveis, filtros, estados vazios, mapas, denúncia e 404, em 375 px e 1280 px, contra o build de produção |
 
 ## Rodando localmente
 
@@ -84,21 +85,22 @@ O Supabase Studio local fica em http://127.0.0.1:54323.
 <details>
 <summary>Todos os scripts</summary>
 
-| Comando                                   | O que faz                                               |
-| ----------------------------------------- | ------------------------------------------------------- |
-| `npm run dev`                             | Servidor de desenvolvimento                             |
-| `npm run build` / `npm start`             | Build de produção e servidor                            |
-| `npm run check`                           | lint + typecheck + testes de unidade                    |
-| `npm run lint` / `npm run lint:fix`       | ESLint                                                  |
-| `npm run typecheck`                       | Gera os tipos de rota do Next e roda o `tsc`            |
-| `npm run format` / `npm run format:check` | Prettier (ordena classes do Tailwind também)            |
-| `npm test` / `npm run test:watch`         | Testes de unidade (Vitest)                              |
-| `npm run test:db`                         | Testes do banco (pgTAP)                                 |
-| `npm run test:integration`                | Busca chamada do Next contra o banco local              |
-| `npm run test:e2e`                        | E2E (Playwright) contra o build de produção, porta 3100 |
-| `npm run db:start` / `npm run db:stop`    | Liga/desliga o Supabase local                           |
-| `npm run db:reset`                        | Recria o banco local com migrations + seed              |
-| `npm run db:types`                        | Regenera `src/types/database.ts`                        |
+| Comando                                   | O que faz                                                                                    |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `npm run dev`                             | Servidor de desenvolvimento                                                                  |
+| `npm run build` / `npm start`             | Build de produção e servidor                                                                 |
+| `npm run check`                           | lint + typecheck + testes de unidade                                                         |
+| `npm run lint` / `npm run lint:fix`       | ESLint                                                                                       |
+| `npm run typecheck`                       | Gera os tipos de rota do Next e roda o `tsc`                                                 |
+| `npm run format` / `npm run format:check` | Prettier (ordena classes do Tailwind também)                                                 |
+| `npm test` / `npm run test:watch`         | Testes de unidade (Vitest)                                                                   |
+| `npm run test:db`                         | Testes do banco (pgTAP)                                                                      |
+| `npm run test:integration`                | Busca chamada do Next contra o banco local                                                   |
+| `npm run test:e2e`                        | E2E (Playwright) contra o build de produção, porta 3100                                      |
+| `npm run db:start` / `npm run db:stop`    | Liga/desliga o Supabase local                                                                |
+| `npm run db:reset`                        | Recria o banco local com migrations + seed                                                   |
+| `npm run db:types`                        | Regenera `src/types/database.ts`                                                             |
+| `npm run import:listings -- arquivo.csv`  | Importa imóveis de uma planilha (modelo em `docs/imoveis-modelo.csv`); `--dry-run` só valida |
 
 </details>
 
@@ -149,7 +151,7 @@ src/
 - [x] **Fase 1:** banco, RLS, busca geográfica, seed e testes pgTAP
 - [x] **Fase 2:** home, busca por faculdade, filtros e mapa
 - [x] **Fase 3:** página da república (galeria, regras, WhatsApp, denúncia)
-- [ ] **Fase 4:** "Não quero república": kitnets e contatos de moradia da faculdade
+- [x] **Fase 4:** "Não quero república": kitnets e contatos de moradia da faculdade
 - [ ] **Fase 5:** cadastro com login por link mágico, upload de fotos e painel de moderação
 - [ ] **Fase 6:** SEO, acessibilidade, Lighthouse ≥ 90 e deploy (Vercel + Supabase)
 - [ ] **Fase 7:** busca em linguagem natural com a Claude API ("rep mista até 700 perto da Unesp")
