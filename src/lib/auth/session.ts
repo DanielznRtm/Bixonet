@@ -1,4 +1,5 @@
 import "server-only";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { createSessionClient } from "@/lib/supabase/server";
 
@@ -6,6 +7,9 @@ export type CurrentUser = { id: string; email: string | null };
 
 /** Usuário logado (ou null). Lê cookies: use dentro de <Suspense>. */
 export async function getCurrentUser(): Promise<CurrentUser | null> {
+  // A validação do token usa a hora atual: marca este trecho como "por requisição" para o
+  // Next não tentar pré-renderizá-lo (Cache Components).
+  await connection();
   const supabase = await createSessionClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;

@@ -45,12 +45,15 @@ async function latestMagicLink(email: string): Promise<string> {
 /** Entra pelo /entrar: pede o link, abre o e-mail e segue o link (sem senha). */
 export async function signIn(page: Page, email: string, next = "/minhas-reps") {
   await page.goto(`/entrar?next=${encodeURIComponent(next)}`);
-  await page.waitForLoadState("networkidle");
+  await page.waitForLoadState("networkidle", { timeout: 8_000 }).catch(() => {});
   await page.getByLabel("Seu e-mail").fill(email);
   await page.getByRole("button", { name: "Receber link de acesso" }).click();
   await expect(page.getByText("Confira seu e-mail")).toBeVisible();
   await page.goto(await latestMagicLink(email));
   await page.waitForURL((url) => url.pathname === next.split("?")[0]);
+  // Espera o React assumir a página: clique antes disso pode ser desfeito na hidratação.
+  // Páginas com mapa ficam baixando tiles, então a espera tem limite.
+  await page.waitForLoadState("networkidle", { timeout: 8_000 }).catch(() => {});
 }
 
 /** Apaga tudo o que os testes criaram (repúblicas, usuários e admins). */

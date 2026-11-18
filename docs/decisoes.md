@@ -184,3 +184,11 @@ Ordem cronológica. Cada item cita onde a decisão vive no código.
 **Decisão.** Localmente ficam desligados analytics, realtime, edge runtime e Studio (o site não usa nenhum deles). Basta trocar `enabled` no `supabase/config.toml` para religar.
 
 **Onde.** `supabase/config.toml`
+
+## 23. Formulário valida enquanto digita, não ao sair do campo
+
+**Contexto.** No cadastro, o modo "valida ao sair do campo" fazia a mensagem de erro sumir no exato momento em que a pessoa apertava "Continuar": o campo perdia o foco, revalidava, o layout subia ~20 px entre apertar e soltar o botão, e o clique caía fora dele. O teste e2e pegou o bug; um usuário de verdade também perderia o clique.
+
+**Decisão.** `mode: "onChange"`: o erro some enquanto a pessoa digita, antes do clique. Junto, o rascunho salvo no navegador é restaurado uma única vez (antes, o efeito rodava de novo a cada tecla).
+
+**Onde.** `src/components/registration/registration-wizard.tsx`

@@ -61,12 +61,12 @@ As decisões de arquitetura, com o problema, a escolha e o custo de cada uma, es
 
 ## Qualidade
 
-| Tipo          | Ferramenta              | O que cobre                                                                                                                                  |
-| ------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo, link do WhatsApp, denúncia, planilha de imóveis, repetição em timeout    |
-| Banco         | pgTAP (38 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; arredondamento; busca de repúblicas e imóveis; página de detalhe      |
-| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                                              |
-| Ponta a ponta | Playwright (52 testes)  | Home → busca → república, moradia e imóveis, filtros, estados vazios, mapas, denúncia e 404, em 375 px e 1280 px, contra o build de produção |
+| Tipo          | Ferramenta              | O que cobre                                                                                                                                                                                                     |
+| ------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unidade       | Vitest                  | Filtros da URL, formatação, busca sem acento, geometria do círculo, link do WhatsApp, denúncia, planilha de imóveis, repetição em timeout                                                                       |
+| Banco         | pgTAP (51 testes)       | O público não vê pendentes nem colunas privadas; o dono não se aprova; limite de 3 em análise; fotos só da própria pasta; arredondamento; busca de repúblicas e imóveis; página de detalhe                      |
+| Integração    | Vitest + Supabase local | A busca chamada pelo Next devolve o esperado e a tabela fica fechada ao público                                                                                                                                 |
+| Ponta a ponta | Playwright (62 testes)  | Home → busca → república, moradia e imóveis, login por link, cadastro em 5 etapas, aprovação e recusa no admin, filtros, estados vazios, mapas, denúncia e 404, em 375 px e 1280 px, contra o build de produção |
 
 ## Rodando localmente
 

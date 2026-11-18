@@ -94,20 +94,30 @@ export function RegistrationWizard({
   const form = useForm<RegistrationInput>({
     resolver: zodResolver(registrationSchema),
     defaultValues: initialValues ?? EMPTY_REGISTRATION,
-    mode: "onTouched",
+    // Valida enquanto digita (não ao sair do campo): validar no blur fazia a mensagem de erro
+    // sumir no meio do clique em "Continuar", o layout subia e o clique se perdia.
+    mode: "onChange",
   });
   const { register, control, handleSubmit, trigger, watch, setValue, reset, formState } =
     form;
   const errors = formState.errors as FieldErrors<Record<string, unknown>>;
 
   // Rascunho no navegador (só no cadastro novo): ninguém perde o que digitou se sair no meio.
+  // Dois efeitos separados de propósito: restaurar roda UMA vez; salvar acompanha as mudanças.
+  // (Juntos, o reset() disparava o efeito de novo a cada tecla e travava a página.)
+  const restoredRef = useRef(false);
   useEffect(() => {
-    if (mode !== "create") return;
+    if (mode !== "create" || restoredRef.current) return;
+    restoredRef.current = true;
     const draft = readDraft();
     if (draft) {
       reset({ ...EMPTY_REGISTRATION, ...draft });
       setDraftRestored(true);
     }
+  }, [mode, reset]);
+
+  useEffect(() => {
+    if (mode !== "create") return;
     const sub = watch((values) => {
       try {
         window.localStorage.setItem(DRAFT_KEY, JSON.stringify(values));
@@ -116,7 +126,7 @@ export function RegistrationWizard({
       }
     });
     return () => sub.unsubscribe();
-  }, [mode, reset, watch]);
+  }, [mode, watch]);
 
   useEffect(() => {
     headingRef.current?.focus();

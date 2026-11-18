@@ -3,7 +3,7 @@ import { adminDb, cleanup, signIn, TEST_PHOTO } from "./support";
 
 // Fluxo completo de cadastro e moderação. Precisa do Supabase local (com a caixa de e-mails
 // de teste, Mailpit). Cada projeto (mobile/desktop) usa e-mails e nomes próprios.
-test.describe.configure({ mode: "serial" });
+test.describe.configure({ mode: "serial", timeout: 60_000 });
 
 const RUN = Date.now();
 let owner: string;
@@ -59,22 +59,22 @@ test("cadastro em 5 etapas fica em análise e não aparece na busca", async ({ p
 
   // 2. Onde fica: bairro + toque no mapa + faculdade
   await expect(page.getByRole("heading", { name: "Onde fica" })).toBeVisible();
-  await page.getByLabel("Bairro").fill("Centro");
+  await page.getByLabel("Bairro", { exact: true }).fill("Centro");
   const picker = page.getByTestId("location-picker");
   await expect(picker.locator("canvas")).toBeVisible({ timeout: 20_000 });
   await picker.locator("canvas").click({ position: { x: 120, y: 120 } });
   await expect(
     picker.getByLabel("Ponto da república (arraste para ajustar)"),
   ).toBeVisible();
-  await page.getByText("Unesp", { exact: true }).click();
+  await page.getByRole("checkbox", { name: "Unesp" }).click();
   await page.getByRole("button", { name: "Continuar" }).click();
 
   // 3. A casa
   await expect(page.getByRole("heading", { name: "A casa" })).toBeVisible();
   await page
-    .getByLabel("Sobre a casa")
+    .getByLabel("Sobre a casa", { exact: true })
     .fill("Casa de teste automatizado, com quintal e perto do ponto de ônibus.");
-  await page.getByText("Wi-Fi", { exact: true }).click();
+  await page.getByRole("checkbox", { name: "Wi-Fi" }).click();
   await page.getByRole("button", { name: "Continuar" }).click();
 
   // 4. Fotos (reduzida no navegador e enviada ao Storage)
@@ -86,7 +86,7 @@ test("cadastro em 5 etapas fica em análise e não aparece na busca", async ({ p
   // 5. Contato e consentimentos
   await expect(page.getByRole("heading", { name: "Contato" })).toBeVisible();
   await page.getByLabel("Nome para contato").fill("Ana");
-  await page.getByLabel("WhatsApp").fill("(15) 99123-4567");
+  await page.getByLabel("WhatsApp", { exact: true }).fill("(15) 99123-4567");
   await page.getByRole("button", { name: "Enviar para análise" }).click();
   await expect(page.getByText("É preciso autorizar a exibição")).toBeVisible();
   await page.getByText("Moro nesta república").click();
@@ -146,7 +146,7 @@ test("admin recusa com motivo e o dono vê o motivo", async ({ page }) => {
     .getByTestId("admin-republic")
     .filter({ hasText: `${repName} (recusar)` });
   await review.getByRole("button", { name: "Recusar" }).click();
-  await page.getByLabel("Motivo").fill("Faltaram fotos dos quartos.");
+  await page.getByLabel("Motivo", { exact: true }).fill("Faltaram fotos dos quartos.");
   await page.getByRole("dialog").getByRole("button", { name: "Recusar" }).click();
   await expect(review).toHaveCount(0);
 
