@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function RepublicPage({ params, searchParams }: Props) {
   return (
-    <main className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-6 px-4 pt-6 sm:px-6 md:pt-8">
+    <main className="mx-auto grid min-h-dvh w-full max-w-6xl grid-cols-[minmax(0,1fr)] content-start gap-6 px-4 pt-6 sm:px-6 md:pt-8">
       <Suspense fallback={<DetailSkeleton />}>
         <RepublicContent params={params} searchParams={searchParams} />
       </Suspense>

@@ -73,7 +73,7 @@ test("filtro inválido na URL é ignorado", async ({ page }) => {
 test("o mapa aparece", async ({ page }, testInfo) => {
   await page.goto("/sorocaba/unesp");
   if (isMobile(testInfo.project.name)) {
-    await page.getByRole("tab", { name: "Mapa" }).click();
+    await page.getByRole("button", { name: "Mapa" }).click();
   }
   const map = page.getByTestId("republic-map");
   await expect(map).toBeVisible();

@@ -156,7 +156,7 @@ src/
 - [x] **Fase 3:** página da república (galeria, regras, WhatsApp, denúncia)
 - [x] **Fase 4:** "Não quero república": kitnets e contatos de moradia da faculdade
 - [x] **Fase 5:** cadastro com login por link mágico, upload de fotos e painel de moderação
-- [ ] **Fase 6:** SEO, acessibilidade, Lighthouse ≥ 90 e deploy (Vercel + Supabase)
+- [ ] **Fase 6:** 6a pronta (SEO, prévias para WhatsApp, páginas institucionais, acessibilidade, segurança); falta publicar (Vercel + Supabase + domínio, veja [docs/deploy.md](docs/deploy.md))
 - [ ] **Fase 7:** busca em linguagem natural com a Claude API ("rep mista até 700 perto da Unesp")
 
 ## Como foi construído

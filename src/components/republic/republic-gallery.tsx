@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, House } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,13 +61,20 @@ export function RepublicGallery({ photos, name, kind }: Props) {
             <button
               type="button"
               onClick={() => setOpenIndex(i)}
-              className="block h-56 w-full overflow-hidden rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:h-full sm:min-h-32"
+              className="relative block h-56 w-full overflow-hidden rounded-2xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:h-full sm:min-h-32"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element -- fotos do Storage entram na Fase 5 */}
-              <img
+              <Image
                 src={src}
                 alt={`Foto ${i + 1} de ${photos.length} de ${name}`}
-                className="h-full w-full object-cover transition-transform hover:scale-[1.02]"
+                fill
+                // A primeira foto aparece logo de cara: carrega com prioridade.
+                preload={i === 0}
+                sizes={
+                  i === 0
+                    ? "(min-width: 640px) 50vw, 85vw"
+                    : "(min-width: 640px) 25vw, 85vw"
+                }
+                className="object-cover transition-transform hover:scale-[1.02]"
               />
             </button>
           </li>
@@ -82,10 +90,12 @@ export function RepublicGallery({ photos, name, kind }: Props) {
           <DialogDescription className="sr-only">
             Foto {current + 1} de {photos.length}
           </DialogDescription>
-          {/* eslint-disable-next-line @next/next/no-img-element -- fotos do Storage entram na Fase 5 */}
-          <img
+          <Image
             src={photos[current]}
             alt={`Foto ${current + 1} de ${photos.length} de ${name}`}
+            width={1600}
+            height={1200}
+            sizes="(min-width: 896px) 896px, 100vw"
             className="max-h-[75dvh] w-full rounded-xl object-contain"
           />
           {photos.length > 1 ? (

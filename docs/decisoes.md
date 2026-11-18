@@ -192,3 +192,29 @@ Ordem cronológica. Cada item cita onde a decisão vive no código.
 **Decisão.** `mode: "onChange"`: o erro some enquanto a pessoa digita, antes do clique. Junto, o rascunho salvo no navegador é restaurado uma única vez (antes, o efeito rodava de novo a cada tecla).
 
 **Onde.** `src/components/registration/registration-wizard.tsx`
+
+## 24. Catálogo real em migration, não no seed
+
+**Contexto.** As faculdades estavam no `seed.sql`, que só roda localmente: em produção o site abriria vazio.
+
+**Decisão.** Cidades e faculdades reais ficam numa migration idempotente (upsert pelo id). O `seed.sql` passa a ter só dados de exemplo. Uma cidade nova vira uma migration nova.
+
+**Por quê.** Versionado, revisável e aplicado pelo mesmo `supabase db push` do schema, sem precisar da chave secreta contra a produção.
+
+**Onde.** `supabase/migrations/*_catalog_sorocaba.sql`
+
+## 25. Metadados por streaming, prévia no WhatsApp garantida
+
+**Contexto.** Na página da república, o título depende de uma consulta ao banco. O Next 16 envia esses metadados depois do `<head>` (streaming) para navegadores comuns, e o Lighthouse reclama de "sem meta description".
+
+**Decisão.** Manter o streaming. Conferimos que WhatsApp, Facebook e Telegram (que não executam JavaScript) recebem título, descrição e imagem dentro do `<head>`: o Next os reconhece e espera os metadados. O Googlebot lê os metadados no corpo da página.
+
+**Por quê.** A página aparece mais rápido para as pessoas, sem prejudicar as prévias de link.
+
+**Onde.** `src/app/republica/[slug]/page.tsx`
+
+## 26. Promessas da política de privacidade estão no código
+
+**Decisão.** O que `/privacidade` promete é implementado: denúncias resolvidas são apagadas depois de 12 meses por um job diário no banco (`pg_cron`); o build de produção falha se faltarem o responsável e o e-mail de contato (`NEXT_PUBLIC_CONTROLLER_NAME`, `NEXT_PUBLIC_CONTACT_EMAIL`).
+
+**Onde.** `supabase/migrations/*_data_retention.sql`, `src/lib/site.ts`

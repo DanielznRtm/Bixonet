@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function HousingPage({ params, searchParams }: Props) {
   // Mesmo padrão da busca de repúblicas: dados da URL dentro de <Suspense>.
   return (
-    <main className="mx-auto grid w-full max-w-4xl grid-cols-[minmax(0,1fr)] gap-6 px-4 py-6 sm:px-6 md:py-8">
+    <main className="mx-auto grid min-h-dvh w-full max-w-4xl grid-cols-[minmax(0,1fr)] content-start gap-6 px-4 py-6 sm:px-6 md:py-8">
       <Suspense fallback={<PageSkeleton />}>
         <HousingContent params={params} searchParams={searchParams} />
       </Suspense>

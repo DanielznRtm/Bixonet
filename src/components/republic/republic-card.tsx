@@ -1,4 +1,5 @@
 import { BadgeCheck, BedDouble, House, Info } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -37,10 +38,12 @@ export function RepublicCard({
       )}
     >
       {r.coverPhoto ? (
-        // eslint-disable-next-line @next/next/no-img-element -- fotos do Storage entram na Fase 5
-        <img
+        <Image
           src={r.coverPhoto}
           alt=""
+          width={224}
+          height={224}
+          sizes="(min-width: 640px) 112px, 80px"
           className="size-20 shrink-0 rounded-xl object-cover sm:size-28"
         />
       ) : (
@@ -73,7 +76,7 @@ export function RepublicCard({
           ) : null}
         </div>
 
-        <h3 className="line-clamp-2 font-heading text-lg leading-tight font-semibold">
+        <h2 className="line-clamp-2 font-heading text-lg leading-tight font-semibold">
           {/* O link cobre o card inteiro (after:absolute) */}
           <Link
             href={`/republica/${r.slug}?de=${campusSlug}`}
@@ -81,7 +84,7 @@ export function RepublicCard({
           >
             {r.name}
           </Link>
-        </h3>
+        </h2>
 
         {r.neighborhood ? (
           <p className="truncate text-sm text-muted-foreground">{r.neighborhood}</p>

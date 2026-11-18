@@ -40,7 +40,7 @@ export default function InstitutionPage({ params, searchParams }: Props) {
   // params e searchParams são "dados da URL": ficam dentro de <Suspense> para a
   // navegação ser instantânea (a casca da página aparece antes, o conteúdo chega em seguida).
   return (
-    <main className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-6 px-4 py-6 sm:px-6 md:py-8">
+    <main className="mx-auto grid min-h-dvh w-full max-w-6xl grid-cols-[minmax(0,1fr)] content-start gap-6 px-4 py-6 sm:px-6 md:py-8">
       <Suspense fallback={<PageSkeleton />}>
         <InstitutionContent params={params} searchParams={searchParams} />
       </Suspense>

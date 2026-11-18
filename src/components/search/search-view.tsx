@@ -15,7 +15,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { RepublicResult } from "@/lib/data/republics";
 import {
   DEFAULT_FILTERS,
@@ -132,22 +131,36 @@ export function SearchView({ campus, filters, republics }: Props) {
     >
       {/* Celular: abas Lista | Mapa + botão de filtros */}
       <div className="flex items-center gap-2 lg:hidden">
-        <Tabs
-          value={mobileTab}
-          onValueChange={(v) => setMobileTab(v as MobileTab)}
-          className="flex-1"
+        {/* Botões de alternância (aria-pressed), não abas ARIA: os dois "painéis" são o
+            mesmo layout decidido por CSS, então não há painel de aba para apontar. */}
+        <div
+          role="group"
+          aria-label="Ver como"
+          className="flex h-10 flex-1 gap-1 rounded-lg bg-muted p-1"
         >
-          <TabsList className="h-10 w-full">
-            <TabsTrigger value="lista" className="gap-1.5">
-              <List aria-hidden />
-              Lista
-            </TabsTrigger>
-            <TabsTrigger value="mapa" className="gap-1.5">
-              <MapIcon aria-hidden />
-              Mapa
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+          {(
+            [
+              { value: "lista", label: "Lista", icon: List },
+              { value: "mapa", label: "Mapa", icon: MapIcon },
+            ] as const
+          ).map(({ value, label, icon: Icon }) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={mobileTab === value}
+              onClick={() => setMobileTab(value)}
+              className={cn(
+                "inline-flex flex-1 items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+                mobileTab === value
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-foreground/80 hover:text-foreground",
+              )}
+            >
+              <Icon aria-hidden className="size-4" />
+              {label}
+            </button>
+          ))}
+        </div>
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" className="h-10 gap-1.5 rounded-lg">

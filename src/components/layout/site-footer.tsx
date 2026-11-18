@@ -16,8 +16,14 @@ export function SiteFooter() {
           <Link href="/minhas-reps" className="hover:text-foreground hover:underline">
             Área da república
           </Link>
+          <Link href="/sobre" className="hover:text-foreground hover:underline">
+            Sobre
+          </Link>
           <Link href="/privacidade" className="hover:text-foreground hover:underline">
             Privacidade
+          </Link>
+          <Link href="/termos" className="hover:text-foreground hover:underline">
+            Termos
           </Link>
         </nav>
       </div>

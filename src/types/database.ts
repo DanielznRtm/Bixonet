@@ -206,6 +206,11 @@ isOneToOne: false
 "is_public_republic":
 { Args: { "p_republic_id": string }; Returns: boolean
                            },
+"list_public_republics":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "slug": string,"updated_at": string
+            }[]
+                           },
 "republic_nearby_institutions":
 { Args: { "p_max_distance_m"?: number,"p_republic_id": string }; Returns: {
               "acronym": string,"city_slug": string,"declared": boolean,"distance_m": number,"institution_id": string,"name": string,"slug": string
